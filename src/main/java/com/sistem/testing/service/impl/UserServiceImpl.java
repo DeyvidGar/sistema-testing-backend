@@ -1,5 +1,6 @@
 package com.sistem.testing.service.impl;
 
+import com.sistem.testing.exceptions.UserNotFoundException;
 import com.sistem.testing.model.User;
 import com.sistem.testing.model.UserRol;
 import com.sistem.testing.repository.RolRepository;
@@ -13,8 +14,8 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     //inject
+//    @Autowired
     private UserRepository userRepository;
     private RolRepository rolRepository;
     public UserServiceImpl( UserRepository userRepository, RolRepository rolRepository ){
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
         //buscamos por username antes de guardar
         User userExisist = this.userRepository.findByUsername(user.getUsername());
         if(userExisist != null){
-            throw new Exception("This username is already exisist.");
+            throw new UserNotFoundException("This username is already exisist.");
         }
 
         //guardamos nuevo user
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
         User userExisist = this.userRepository.findByUsername(username);
 
         if(userExisist == null){
-            throw new Exception("Username not exisist.");
+            throw new UserNotFoundException("Username not exisist.");
         }
 
 
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
         User userExisist = this.userRepository.findById(id).get();
 
         if(userExisist == null) {
-            throw new Exception("User not fount.");
+            throw new UserNotFoundException("User not fount.");
         }
 
         try {

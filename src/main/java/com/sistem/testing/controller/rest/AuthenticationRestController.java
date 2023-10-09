@@ -12,14 +12,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 @RestController
 @CrossOrigin("*")
-public class AuthenticationController {
+public class AuthenticationRestController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -36,7 +35,7 @@ public class AuthenticationController {
             authentication(jwtRequest.getUsername(), jwtRequest.getPassword());
         } catch (Exception e){
             e.printStackTrace();
-            throw new Exception("user not found");
+            throw new Exception("Bad credentials");
         }
         UserDetails userDetails = this.userDetailService.loadUserByUsername(jwtRequest.getUsername());
         String token = this.jwtUtils.generateToken(userDetails);
